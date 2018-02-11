@@ -49,31 +49,6 @@ class UserProxy(User):
         self.save()
 
 
-class GoogleUser(models.Model):
-    google_id = models.CharField(max_length=60, unique=True)
-
-    app_user = models.OneToOneField(User, related_name='user',
-                                    on_delete=models.CASCADE)
-    appuser_picture = models.TextField()
-
-    def check_diff(self, idinfo):
-        """Check for differences between request/idinfo and model data.
-            Args:
-                idinfo: data passed in from post method.
-        """
-        data = {
-                "appuser_picture": idinfo['picture'],
-            }
-
-        for field in data:
-            if getattr(self, field) != data[field] and data[field] != '':
-                setattr(self, field, data[field])
-        self.save()
-
-    def __str__(self):
-        return "@{}".format(self.app_user.username)
-
-
 class UserProfile(models.Model):
     """Class that defines user profile model.
     Attributes: user
@@ -99,3 +74,77 @@ def create_user_profile(sender, instance, created, **kwargs):
 
     post_save.connect(create_user_profile, sender=User,
                       dispatch_uid=create_user_profile)
+
+
+class Researcher(BaseInfo):
+    """Model Class for Researcher"""
+
+    bio = models.TextField()
+    education = models.TextField()
+    experience = models.IntegerField()
+    research_experience = models.TextField()
+    available_from = models.DateField()
+    available_to = models.DateField()
+
+
+class Fisher(BaseInfo):
+    """Model class for Fisher"""
+
+    stock = models.CharField(max_length=300)
+    vessels = models.CharField(max_length=300)
+    geography = models.CharField(max_length=300)
+    research_gaps = models.TextField()
+    details = models.TextField()
+
+
+class GoogleUser(models.Model):
+    google_id = models.CharField(max_length=60, unique=True)
+    app_user = models.OneToOneField(User, related_name='user', on_delete=models.CASCADE)
+    appuser_picture = models.TextField()
+    researcher = models.ForeignKey(Researcher, on_delete=models.CASCADE, blank=True, null=True)
+    fisher = models.ForeignKey(Fisher, on_delete=models.CASCADE, blank=True, null=True)
+
+    def check_diff(self, idinfo):
+        """Check for differences between request/idinfo and model data.
+            Args:
+                idinfo: data passed in from post method.
+        """
+        data = {
+                "appuser_picture": idinfo['picture'],
+            }
+
+        for field in data:
+            if getattr(self, field) != data[field] and data[field] != '':
+                setattr(self, field, data[field])
+        self.save()
+
+    def __str__(self):
+        return "@{}".format(self.app_user.username)
+
+
+class Interest(BaseInfo):
+    """User Interest Model """
+
+    researcher = models.ForeignKey(Researcher, on_delete=models.CASCADE)
+    fisher = models.ForeignKey(Fisher, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ('-created_at',)
+        unique_together = ('researcher', 'fisher')
+
+    def __str__(self):
+        return "{} is interested in {}" .format(self.researcher.id, self.fisher.id)
+
+
+class Match(BaseInfo):
+    """Match Model """
+
+    researcher = models.ForeignKey(Researcher, on_delete=models.CASCADE)
+    fisher = models.ForeignKey(Fisher, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ('-created_at',)
+        unique_together = ('researcher', 'fisher')
+
+    def __str__(self):
+        return "{} is matched with {}" .format(self.researcher.id, self.fisher.id)

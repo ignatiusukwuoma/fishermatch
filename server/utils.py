@@ -15,12 +15,6 @@ def resolve_google_oauth(request):
     try:
         idinfo = client.verify_id_token(token, CLIENT_ID)
 
-        if 'hd' not in idinfo:
-            raise AuthenticationFailed('Sorry, only Andelans can sign in')
-
-        if idinfo['hd'] != 'andela.com':
-            raise AuthenticationFailed('Sorry, only Andelans can sign in')
-
         if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
             raise PermissionDenied('Wrong Issuer')
 

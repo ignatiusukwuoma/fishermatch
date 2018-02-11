@@ -73,7 +73,7 @@ class GoogleLoginView(APIView):
 
         idinfo = resolve_google_oauth(request)
 
-        # check if it is a returning user.
+        # if it is a returning user.
         try:
             google_user = GoogleUser.objects.get(google_id=idinfo['sub'])
             google_user.check_diff(idinfo)
