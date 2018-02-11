@@ -1,0 +1,28 @@
+{
+  "name": "fishermatch",
+  "version": "1.0.0",
+  "description": "A matchmaking app to connect fishers and researchers",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "webpack-dev-server --config webpack.config.dev.js --progress --colors",
+    "start": "webpack --config webpack.config.prod.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ignatiusukwuoma/fishermatch.git"
+  },
+  "keywords": [
+    "fisher",
+    "researcher"
+  ],
+  "author": "Ignatius Ukwuoma",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ignatiusukwuoma/fishermatch/issues"
+  },
+  "homepage": "https://github.com/ignatiusukwuoma/fishermatch#readme",
+  "dependencies": {
+    "dotenv": "^5.0.0",
+    "webpack": "^3.11.0"
+  }
+}

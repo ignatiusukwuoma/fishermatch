@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+# from .models import GoogleUser, Fisher, Researcher
+
+# admin.site.register(Fisher)
+# admin.site.register(Researcher)

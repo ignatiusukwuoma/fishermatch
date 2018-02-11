@@ -1,2 +1,16 @@
-.idea
+.idea/
 .env
+node_modules/
+*.pyc
+*.db
+*.sqlite
+*.sqlite3
+vscode/
+webpack-stats.json
+.vscode/
+venv/
+**/npm-debug.log*
+**/*.swo
+**/*.swp
+**/.DS_Store
+.DS_Store
